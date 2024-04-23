@@ -1,0 +1,52 @@
+.game {
+    display: flex;
+}
+
+.card {
+    width: 125px;
+    height: 182px;
+    -moz-box-shadow: 0 0 3px #000;
+    -webkit-box-shadow: 0 0 3px #000;
+    box-shadow: 0 0 3px #000;
+}
+
+.emptyDeck {
+    text-align: center;
+    line-height: 182px;
+    font-size: 60px;
+    opacity: 0.5;
+}
+
+.stock {
+    .stock-deck {
+
+    }
+
+    .stock-card {
+        margin-top: 30px;
+    }
+}
+
+.columns {
+    margin-left: 30px;
+    display: flex;
+    justify-content: space-between;
+
+    .column {
+        width: 145px;
+        align-items: center;
+        .card-column {
+            margin-top: -110px;
+        }
+        :first-child {
+            margin-top: 0;
+        }
+    }
+}
+
+.objective { 
+    margin-left: 30px;
+    .objective-deck {
+        margin-top: 30px;
+    }
+}
