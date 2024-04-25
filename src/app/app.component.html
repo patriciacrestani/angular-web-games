@@ -2,58 +2,199 @@
   <div class="stock">
     <div class="stock-deck">
       <img class="card" *ngIf="hasBlockedStock()" src="assets/images/cards/back.png" alt="" (click)="unblockStockCard()">
+
       <i class="fa-solid fa-ban card emptyDeck" *ngIf="!hasBlockedStock()" (click)="blockAllStockCards()"></i>
     </div>
   
-    <div class="stock-card">
-      <img class="card" *ngIf="hasUnblockedStock()" src="{{lastUnblockedStockCard.image}}" alt="">
+    <div 
+      class="stock-card" 
+      #stockCard="cdkDropList" 
+      cdkDropList  
+      [cdkDropListData]="stock"
+      [cdkDropListEnterPredicate]="blockDrop"
+      [cdkDropListConnectedTo]="[firstList, secondList, thirdList, fourthList, fifthList, sixthList, seventhList, heartColumn]"
+    >
+      <img 
+        class="card" 
+        *ngIf="hasUnblockedStock()" 
+        src="{{lastUnblockedStockCard.image}}" 
+        alt="" 
+        cdkDrag
+        [cdkDragData]="lastUnblockedStockCard"
+      >
       <i class="fa-solid fa-ban card emptyDeck" *ngIf="!hasUnblockedStock()"></i>
     </div>
   </div>
   
   <div class="columns">
-    <div class="column">
-      <img class="card card-column" *ngFor="let firstCard of firstColumn" src="{{getCardImage(firstCard)}}" alt="">
+    <div 
+      class="column"
+      cdkDropList
+      #firstList="cdkDropList"
+      [cdkDropListData]="firstColumn"
+      [cdkDropListConnectedTo]="[stockCard, secondList, thirdList, fourthList, fifthList, sixthList, seventhList]"
+      (cdkDropListDropped)="drop($event)"
+      [cdkDropListSortPredicate]="sortPredicate"
+    >
+      <img 
+        class="card card-column" 
+        *ngFor="let firstCard of firstColumn; let iFirst = index"
+        src="{{getCardImage(firstCard)}}" 
+        alt="" 
+        cdkDrag 
+        [cdkDragData]="firstCard" 
+        [cdkDragDisabled]="checkCardDraggable(firstCard, iFirst, firstColumn)"
+      >
     </div>
-    <div class="column">
-      <img class="card card-column" *ngFor="let secondCard of secondColumn" src="{{getCardImage(secondCard)}}" alt="">
+    
+    <div
+      class="column"
+      cdkDropList
+      #secondList="cdkDropList"
+      [cdkDropListData]="secondColumn"
+      [cdkDropListConnectedTo]="[stockCard, firstList, thirdList, fourthList, fifthList, sixthList, seventhList]"
+      (cdkDropListDropped)="drop($event)"
+      [cdkDropListSortPredicate]="sortPredicate"
+    >
+      <img 
+        class="card card-column" 
+        *ngFor="let secondCard of secondColumn; let iSecond = index"
+        src="{{getCardImage(secondCard)}}" 
+        alt="" 
+        cdkDrag 
+        [cdkDragData]="secondCard" 
+        [cdkDragDisabled]="checkCardDraggable(secondCard, iSecond, secondColumn)"
+      >
     </div>
-    <div class="column">
-      <img class="card card-column" *ngFor="let thirdCard of thirdColumn" src="{{getCardImage(thirdCard)}}" alt="">
+
+    <div 
+      class="column"
+      cdkDropList
+      #thirdList="cdkDropList"
+      [cdkDropListData]="thirdColumn"
+      [cdkDropListConnectedTo]="[stockCard, firstList, secondList, fourthList, fifthList, sixthList, seventhList]"
+      (cdkDropListDropped)="drop($event)"
+      [cdkDropListSortPredicate]="sortPredicate"
+    >
+      <img 
+        class="card card-column" 
+        *ngFor="let thirdCard of thirdColumn; let iThird = index"
+        src="{{getCardImage(thirdCard)}}" 
+        alt="" 
+        cdkDrag 
+        [cdkDragData]="thirdCard" 
+        [cdkDragDisabled]="checkCardDraggable(thirdCard, iThird, thirdColumn)"
+      >
     </div>
-    <div class="column">
-      <img class="card card-column" *ngFor="let fourthCard of fourthColumn" src="{{getCardImage(fourthCard)}}" alt="">
+
+    <div  
+      class="column"
+      cdkDropList
+      #fourthList="cdkDropList"
+      [cdkDropListData]="fourthColumn"
+      [cdkDropListConnectedTo]="[stockCard, firstList, secondList, thirdList, fifthList, sixthList, seventhList]"
+      (cdkDropListDropped)="drop($event)"
+      [cdkDropListSortPredicate]="sortPredicate"
+    >
+      <img 
+        class="card card-column" 
+        *ngFor="let fourthCard of fourthColumn; let iFourth = index"
+        src="{{getCardImage(fourthCard)}}" 
+        alt="" 
+        cdkDrag 
+        [cdkDragData]="fourthCard" 
+        [cdkDragDisabled]="checkCardDraggable(fourthCard, iFourth, fourthColumn)"
+      >
     </div>
-    <div class="column">
-      <img class="card card-column" *ngFor="let fifthCard of fifthColumn" src="{{getCardImage(fifthCard)}}" alt="">
+
+    <div  
+      class="column"
+      cdkDropList
+      #fifthList="cdkDropList"
+      [cdkDropListData]="fifthColumn"
+      [cdkDropListConnectedTo]="[stockCard, firstList, secondList, thirdList, fourthList, sixthList, seventhList]"
+      (cdkDropListDropped)="drop($event)"
+      [cdkDropListSortPredicate]="sortPredicate"
+    >
+      <img 
+        class="card card-column" 
+        *ngFor="let fifthCard of fifthColumn; let iFifth = index"
+        src="{{getCardImage(fifthCard)}}" 
+        alt="" 
+        cdkDrag 
+        [cdkDragData]="fifthCard" 
+        [cdkDragDisabled]="checkCardDraggable(fifthCard, iFifth, fifthColumn)"
+      >
     </div>
-    <div class="column">
-      <img class="card card-column" *ngFor="let sixthCard of sixthColumn" src="{{getCardImage(sixthCard)}}" alt="">
+
+    <div 
+      class="column"
+      cdkDropList
+      #sixthList="cdkDropList"
+      [cdkDropListData]="sixthColumn"
+      [cdkDropListConnectedTo]="[stockCard, firstList, secondList, thirdList, fourthList, fifthList, seventhList]"
+      (cdkDropListDropped)="drop($event)"
+      [cdkDropListSortPredicate]="sortPredicate"
+    >
+      <img 
+        class="card card-column" 
+        *ngFor="let sixthCard of sixthColumn; let iSixth = index"
+        src="{{getCardImage(sixthCard)}}" 
+        alt="" 
+        cdkDrag 
+        [cdkDragData]="sixthCard" 
+        [cdkDragDisabled]="checkCardDraggable(sixthCard, iSixth, sixthColumn)"
+      >
     </div>
-    <div class="column">
-      <img class="card card-column" *ngFor="let seventhCard of seventhColumn" src="{{getCardImage(seventhCard)}}" alt="">
+
+    <div 
+      class="column"
+      cdkDropList
+      #seventhList="cdkDropList"
+      [cdkDropListData]="seventhColumn"
+      [cdkDropListConnectedTo]="[stockCard, firstList, secondList, thirdList, fourthList, fifthList, sixthList]"
+      (cdkDropListDropped)="drop($event)"
+      [cdkDropListSortPredicate]="sortPredicate"
+    >
+      <img 
+        class="card card-column" 
+        *ngFor="let seventhCard of seventhColumn; let iSeventh = index"
+        src="{{getCardImage(seventhCard)}}" 
+        alt="" 
+        cdkDrag 
+        [cdkDragData]="seventhCard" 
+        [cdkDragDisabled]="checkCardDraggable(seventhCard, iSeventh, seventhColumn)"
+      >
     </div>
   </div>
 
   <div class="objective">
-    <div class="objective-deck">
+    <div 
+      class="objective-deck"
+      cdkDropList
+      #heartColumn="cdkDropList"
+      [cdkDropListData]="heartDeck"
+      [cdkDropListConnectedTo]="[stockCard, firstList, secondList, thirdList, fourthList, fifthList, sixthList, seventhList]"
+      (cdkDropListDropped)="dropDeck($event)"
+      [cdkDropListEnterPredicate]="deckPredicate"
+    >
       <img class="card card-column" *ngIf="hasHeartDeck()" src="{{lastHeartDeckCard.image}}" alt="">
-      <i class="fa-solid fa-ban card emptyDeck" *ngIf="!hasHeartDeck()"></i>
+      <i class="card emptyDeck deck" *ngIf="!hasHeartDeck()">&#9829;</i>
     </div>
 
     <div class="objective-deck">
       <img class="card card-column" *ngIf="hasDiamondDeck()" src="{{lastDiamondDeckCard.image}}" alt="">
-      <i class="fa-solid fa-ban card emptyDeck" *ngIf="!hasDiamondDeck()"></i>
+      <i class="card emptyDeck deck" *ngIf="!hasDiamondDeck()">&#9830;</i>
     </div>
 
     <div class="objective-deck">
       <img class="card card-column" *ngIf="hasSpadesDeck()" src="{{lastSpadesDeckCard.image}}" alt="">
-      <i class="fa-solid fa-ban card emptyDeck" *ngIf="!hasSpadesDeck()"></i>
+      <i class="card emptyDeck deck" *ngIf="!hasSpadesDeck()">&#9824;</i>
     </div>
 
     <div class="objective-deck">
       <img class="card card-column" *ngIf="hasClubDeck()" src="{{lastClubDeckCard.image}}" alt="">
-      <i class="fa-solid fa-ban card emptyDeck" *ngIf="!hasClubDeck()"></i>
+      <i class="card emptyDeck deck" *ngIf="!hasClubDeck()">&#9827;</i>
     </div>
   </div>
 </div>

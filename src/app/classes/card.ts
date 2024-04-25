@@ -54,4 +54,16 @@ export class Card {
     addPreviousCard(card: Card) {
         this.previousCard = card;
     }
+
+    checkOppositeType(type: number): boolean{
+        return this.typesAllowed.some(t => t === type);
+    }
+
+    checkPreviousValue(value: number): boolean{
+        return (this.previousValue == value);
+    }
+
+    checkNextValue(value: number): boolean{
+        return (this.nextValue == value);
+    }
 }

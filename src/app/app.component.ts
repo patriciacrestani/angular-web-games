@@ -4,11 +4,12 @@ import { RouterOutlet } from '@angular/router';
 import { Card } from './classes/card';
 import { CardType } from './enums/card-type-enum';
 import { CardValue } from './enums/card-value-enum';
+import { CdkDrag, CdkDragDrop, CdkDropList, DragDropModule, transferArrayItem } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet],
+  imports: [CommonModule, RouterOutlet, DragDropModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
@@ -64,7 +65,7 @@ export class AppComponent {
   }
 
   hasClubDeck(): boolean {
-    return this.clubDeck && this.clubDeck.length > 0;
+    return this.clubDeck && this.clubDeck.length > 1;
   }
 
   get lastClubDeckCard(): Card {
@@ -72,7 +73,7 @@ export class AppComponent {
   }
 
   hasSpadesDeck(): boolean {
-    return this.spadesDeck && this.spadesDeck.length > 0;
+    return this.spadesDeck && this.spadesDeck.length > 1;
   }
 
   get lastSpadesDeckCard(): Card {
@@ -80,7 +81,7 @@ export class AppComponent {
   }
 
   hasHeartDeck(): boolean {
-    return this.heartDeck && this.heartDeck.length > 0;
+    return this.heartDeck && this.heartDeck.length > 1;
   }
 
   get lastHeartDeckCard(): Card {
@@ -88,7 +89,7 @@ export class AppComponent {
   }
 
   hasDiamondDeck(): boolean {
-    return this.diamondDeck && this.diamondDeck.length > 0;
+    return this.diamondDeck && this.diamondDeck.length > 1;
   }
 
   get lastDiamondDeckCard(): Card {
@@ -158,33 +159,47 @@ export class AppComponent {
     switch(columnNumber) {
       case 1:
         this.firstColumn = [...column];
-        this.firstColumn[columnNumber - 1].unblockCard();
+        this.unblockLastCard(this.firstColumn);
         break;
       case 2:
         this.secondColumn = [...column];
-        this.secondColumn[columnNumber - 1].unblockCard();
+        this.unblockLastCard(this.secondColumn);
         break;
       case 3:
         this.thirdColumn = [...column];
-        this.thirdColumn[columnNumber - 1].unblockCard();
+        this.unblockLastCard(this.thirdColumn);
         break;
       case 4:
         this.fourthColumn = [...column];
-        this.fourthColumn[columnNumber - 1].unblockCard();
+        this.unblockLastCard(this.fourthColumn);
         break;
       case 5:
         this.fifthColumn = [...column];
-        this.fifthColumn[columnNumber - 1].unblockCard();
+        this.unblockLastCard(this.fifthColumn);
         break;
       case 6:
         this.sixthColumn = [...column];
-        this.sixthColumn[columnNumber - 1].unblockCard();
+        this.unblockLastCard(this.sixthColumn);
         break;
       case 7:
         this.seventhColumn = [...column];
-        this.seventhColumn[columnNumber - 1].unblockCard();
+        this.unblockLastCard(this.seventhColumn);
         break; 
     }
+  }
+
+  setTypesDecks() {
+    this.heartDeck.push(new Card(CardType.Heart, 0));
+    this.diamondDeck.push(new Card(CardType.Diamond, 0));
+    this.spadesDeck.push(new Card(CardType.Spades, 0));
+    this.clubDeck.push(new Card(CardType.Club, 0));
+  }
+
+  unblockLastCard(column: Card[]) {
+    if(column.length == 0) {
+      return;
+    }
+    column[column.length - 1].unblockCard();
   }
 
   setGame() {
@@ -196,6 +211,7 @@ export class AppComponent {
     }
 
     this.setStock();
+    this.setTypesDecks();
   }
 
   unblockStockCard() {
@@ -218,5 +234,117 @@ export class AppComponent {
     }
 
     return card.image;
+  }
+
+  transferCard(previousColumn: Card[], currentColumn: Card[], previousCardIndex: number) {
+    let transferedCard = Object.assign({}, previousColumn[previousCardIndex]);
+    previousColumn.splice(previousCardIndex, 1);
+    currentColumn.push(transferedCard);
+  }
+
+  checkStock(list: CdkDropList) {
+    return list.id == "cdk-drop-list-0";
+  }
+
+  sortPredicate(index: number, card: CdkDrag<Card>, dropList: CdkDropList<Card[]>): boolean{
+    return (index == (dropList.data.length - 1));
+  }
+
+  deckPredicate(cardDropped: CdkDrag<any>, dropList: CdkDropList<any>): boolean{
+    console.log("cardDropped", cardDropped.data.type);
+    return (cardDropped.data.type == dropList.data[dropList.data.length -1].type);
+  }
+
+  checkCardDraggable(card: Card, cardIndex: number, column: Card[]): boolean {
+    if(card.blocked) {
+      return true;
+    }
+
+    if(cardIndex != (column.length - 1)) {
+      return true;
+    }
+
+    return false;
+  }
+
+  drop(event: CdkDragDrop<Card[], Card[], Card>) {
+    console.log("evente", event);
+    if (event.previousContainer === event.container) {
+      console.log("same container");
+      return;
+    }
+
+    let cardDropped: Card = event.item.data;
+    let lastCardDropContainer: Card = event.container.data[event.container.data.length - 1];
+
+    if(!lastCardDropContainer.checkOppositeType(cardDropped.type)){
+      console.log("not opposite type", lastCardDropContainer.checkOppositeType(cardDropped.type));
+      return;
+    }
+
+    if(!lastCardDropContainer.checkPreviousValue(cardDropped.value)){
+      console.log("not opposite type", lastCardDropContainer.checkOppositeType(cardDropped.type));
+      return;
+    }
+
+    // let previousIndex = event.previousIndex;
+
+    // if(this.checkStock(event.previousContainer)) {
+    //   previousIndex = this.stock.findIndex(c => c.image = cardDropped.image);
+    //   console.log("stock", this.stock);
+    //   console.log("carta", cardDropped);
+    //   console.log("index in stock", this.stock.findIndex(c => c.image = cardDropped.image));
+    //   console.log("previousIndex", previousIndex);
+
+    //   transferArrayItem(
+    //     this.stock,
+    //     event.container.data,
+    //     previousIndex,
+    //     event.container.data.length
+    //   );
+    //   return;
+    // }
+
+    transferArrayItem(
+      event.previousContainer.data,
+      event.container.data,
+      event.currentIndex,
+      event.container.data.length
+    );
+
+    if(!this.checkStock(event.previousContainer)) {
+      this.unblockLastCard(event.previousContainer.data);
+    }
+  }
+
+  dropDeck(event: CdkDragDrop<Card[], Card[], Card>) {
+    console.log("event", event);
+    let cardDropped: Card = event.item.data;
+    let lastCardDropContainer: Card = event.container.data[Number(event.container.data.length) - 1];
+
+    if(lastCardDropContainer.type == cardDropped.type){
+      console.log("not same type");
+      return;
+    }
+
+    if(lastCardDropContainer.checkNextValue(cardDropped.value)){
+      console.log("not next value");
+      return;
+    }
+
+    transferArrayItem(
+      event.previousContainer.data,
+      event.container.data,
+      event.currentIndex,
+      event.container.data.length
+    );
+
+    if(!this.checkStock(event.previousContainer)) {
+      this.unblockLastCard(event.previousContainer.data);
+    }
+  }
+
+  blockDrop() {
+    return false;
   }
 }
