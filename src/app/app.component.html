@@ -12,7 +12,7 @@
       cdkDropList  
       [cdkDropListData]="stock"
       [cdkDropListEnterPredicate]="blockDrop"
-      [cdkDropListConnectedTo]="[firstList, secondList, thirdList, fourthList, fifthList, sixthList, seventhList, heartColumn]"
+      [cdkDropListConnectedTo]="[firstList, secondList, thirdList, fourthList, fifthList, sixthList, seventhList, heartList, diamondList, spadesList,  clubList]"
     >
       <img 
         class="card" 
@@ -32,7 +32,7 @@
       cdkDropList
       #firstList="cdkDropList"
       [cdkDropListData]="firstColumn"
-      [cdkDropListConnectedTo]="[stockCard, secondList, thirdList, fourthList, fifthList, sixthList, seventhList]"
+      [cdkDropListConnectedTo]="[stockCard, secondList, thirdList, fourthList, fifthList, sixthList, seventhList, heartList, diamondList, spadesList,  clubList]"
       (cdkDropListDropped)="drop($event)"
       [cdkDropListSortPredicate]="sortPredicate"
     >
@@ -52,7 +52,7 @@
       cdkDropList
       #secondList="cdkDropList"
       [cdkDropListData]="secondColumn"
-      [cdkDropListConnectedTo]="[stockCard, firstList, thirdList, fourthList, fifthList, sixthList, seventhList]"
+      [cdkDropListConnectedTo]="[stockCard, firstList, thirdList, fourthList, fifthList, sixthList, seventhList, heartList, diamondList, spadesList,  clubList]"
       (cdkDropListDropped)="drop($event)"
       [cdkDropListSortPredicate]="sortPredicate"
     >
@@ -72,7 +72,7 @@
       cdkDropList
       #thirdList="cdkDropList"
       [cdkDropListData]="thirdColumn"
-      [cdkDropListConnectedTo]="[stockCard, firstList, secondList, fourthList, fifthList, sixthList, seventhList]"
+      [cdkDropListConnectedTo]="[stockCard, firstList, secondList, fourthList, fifthList, sixthList, seventhList, heartList, diamondList, spadesList,  clubList]"
       (cdkDropListDropped)="drop($event)"
       [cdkDropListSortPredicate]="sortPredicate"
     >
@@ -92,7 +92,7 @@
       cdkDropList
       #fourthList="cdkDropList"
       [cdkDropListData]="fourthColumn"
-      [cdkDropListConnectedTo]="[stockCard, firstList, secondList, thirdList, fifthList, sixthList, seventhList]"
+      [cdkDropListConnectedTo]="[stockCard, firstList, secondList, thirdList, fifthList, sixthList, seventhList, heartList, diamondList, spadesList,  clubList]"
       (cdkDropListDropped)="drop($event)"
       [cdkDropListSortPredicate]="sortPredicate"
     >
@@ -112,7 +112,7 @@
       cdkDropList
       #fifthList="cdkDropList"
       [cdkDropListData]="fifthColumn"
-      [cdkDropListConnectedTo]="[stockCard, firstList, secondList, thirdList, fourthList, sixthList, seventhList]"
+      [cdkDropListConnectedTo]="[stockCard, firstList, secondList, thirdList, fourthList, sixthList, seventhList, heartList, diamondList, spadesList,  clubList]"
       (cdkDropListDropped)="drop($event)"
       [cdkDropListSortPredicate]="sortPredicate"
     >
@@ -132,7 +132,7 @@
       cdkDropList
       #sixthList="cdkDropList"
       [cdkDropListData]="sixthColumn"
-      [cdkDropListConnectedTo]="[stockCard, firstList, secondList, thirdList, fourthList, fifthList, seventhList]"
+      [cdkDropListConnectedTo]="[stockCard, firstList, secondList, thirdList, fourthList, fifthList, seventhList, heartList, diamondList, spadesList,  clubList]"
       (cdkDropListDropped)="drop($event)"
       [cdkDropListSortPredicate]="sortPredicate"
     >
@@ -152,7 +152,7 @@
       cdkDropList
       #seventhList="cdkDropList"
       [cdkDropListData]="seventhColumn"
-      [cdkDropListConnectedTo]="[stockCard, firstList, secondList, thirdList, fourthList, fifthList, sixthList]"
+      [cdkDropListConnectedTo]="[stockCard, firstList, secondList, thirdList, fourthList, fifthList, sixthList, heartList, diamondList, spadesList,  clubList]"
       (cdkDropListDropped)="drop($event)"
       [cdkDropListSortPredicate]="sortPredicate"
     >
@@ -172,7 +172,7 @@
     <div 
       class="objective-deck"
       cdkDropList
-      #heartColumn="cdkDropList"
+      #heartList="cdkDropList"
       [cdkDropListData]="heartDeck"
       [cdkDropListConnectedTo]="[stockCard, firstList, secondList, thirdList, fourthList, fifthList, sixthList, seventhList]"
       (cdkDropListDropped)="dropDeck($event)"
@@ -182,17 +182,41 @@
       <i class="card emptyDeck deck" *ngIf="!hasHeartDeck()">&#9829;</i>
     </div>
 
-    <div class="objective-deck">
+    <div
+      class="objective-deck"
+      cdkDropList
+      #diamondList="cdkDropList"
+      [cdkDropListData]="diamondDeck"
+      [cdkDropListConnectedTo]="[stockCard, firstList, secondList, thirdList, fourthList, fifthList, sixthList, seventhList]"
+      (cdkDropListDropped)="dropDeck($event)"
+      [cdkDropListEnterPredicate]="deckPredicate"
+    >
       <img class="card card-column" *ngIf="hasDiamondDeck()" src="{{lastDiamondDeckCard.image}}" alt="">
       <i class="card emptyDeck deck" *ngIf="!hasDiamondDeck()">&#9830;</i>
     </div>
 
-    <div class="objective-deck">
+    <div
+      class="objective-deck"
+      cdkDropList
+      #spadesList="cdkDropList"
+      [cdkDropListData]="spadesDeck"
+      [cdkDropListConnectedTo]="[stockCard, firstList, secondList, thirdList, fourthList, fifthList, sixthList, seventhList]"
+      (cdkDropListDropped)="dropDeck($event)"
+      [cdkDropListEnterPredicate]="deckPredicate"
+    >
       <img class="card card-column" *ngIf="hasSpadesDeck()" src="{{lastSpadesDeckCard.image}}" alt="">
       <i class="card emptyDeck deck" *ngIf="!hasSpadesDeck()">&#9824;</i>
     </div>
 
-    <div class="objective-deck">
+    <div
+      class="objective-deck"
+      cdkDropList
+      #clubList="cdkDropList"
+      [cdkDropListData]="clubDeck"
+      [cdkDropListConnectedTo]="[stockCard, firstList, secondList, thirdList, fourthList, fifthList, sixthList, seventhList]"
+      (cdkDropListDropped)="dropDeck($event)"
+      [cdkDropListEnterPredicate]="deckPredicate"
+    >
       <img class="card card-column" *ngIf="hasClubDeck()" src="{{lastClubDeckCard.image}}" alt="">
       <i class="card emptyDeck deck" *ngIf="!hasClubDeck()">&#9827;</i>
     </div>

@@ -49,6 +49,10 @@
     .objective-deck {
         margin-top: 30px;
     }
+
+    .cdk-drag-placeholder {
+        display: none;
+    }
 }
 
 .deck {

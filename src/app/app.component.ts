@@ -110,7 +110,6 @@ export class AppComponent {
       });
     });
     
-    console.log(this.deck);
     this.setGame();
   }
 
@@ -148,7 +147,6 @@ export class AppComponent {
 
     for(let i = columnNumber; i > 0; i--){
       randomNumber = this.getRandomNumber(52);
-      console.log(randomNumber);
       while(this.controlRandomNumbers(randomNumber)) {
         randomNumber = this.getRandomNumber(52);
       }
@@ -251,7 +249,6 @@ export class AppComponent {
   }
 
   deckPredicate(cardDropped: CdkDrag<any>, dropList: CdkDropList<any>): boolean{
-    console.log("cardDropped", cardDropped.data.type);
     return (cardDropped.data.type == dropList.data[dropList.data.length -1].type);
   }
 
@@ -268,9 +265,8 @@ export class AppComponent {
   }
 
   drop(event: CdkDragDrop<Card[], Card[], Card>) {
-    console.log("evente", event);
+    console.log("drop", event);
     if (event.previousContainer === event.container) {
-      console.log("same container");
       return;
     }
 
@@ -278,12 +274,10 @@ export class AppComponent {
     let lastCardDropContainer: Card = event.container.data[event.container.data.length - 1];
 
     if(!lastCardDropContainer.checkOppositeType(cardDropped.type)){
-      console.log("not opposite type", lastCardDropContainer.checkOppositeType(cardDropped.type));
       return;
     }
 
     if(!lastCardDropContainer.checkPreviousValue(cardDropped.value)){
-      console.log("not opposite type", lastCardDropContainer.checkOppositeType(cardDropped.type));
       return;
     }
 
@@ -318,24 +312,22 @@ export class AppComponent {
   }
 
   dropDeck(event: CdkDragDrop<Card[], Card[], Card>) {
-    console.log("event", event);
+    console.log("dropDeck", event);
     let cardDropped: Card = event.item.data;
-    let lastCardDropContainer: Card = event.container.data[Number(event.container.data.length) - 1];
+    let lastCardDeck: Card = event.container.data[event.container.data.length - 1];
 
-    if(lastCardDropContainer.type == cardDropped.type){
-      console.log("not same type");
+    if(lastCardDeck.type != cardDropped.type){
       return;
     }
 
-    if(lastCardDropContainer.checkNextValue(cardDropped.value)){
-      console.log("not next value");
+    if(!lastCardDeck.checkNextValue(cardDropped.value)){
       return;
     }
 
     transferArrayItem(
       event.previousContainer.data,
       event.container.data,
-      event.currentIndex,
+      event.previousIndex,
       event.container.data.length
     );
 
