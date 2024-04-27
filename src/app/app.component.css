@@ -59,3 +59,35 @@
 .deck {
     display: block;
 }   
+
+.buttons{
+    margin-top: 40px;
+    width: 125px;
+
+    .button {
+        width: 125px;
+        padding-bottom: 10px;
+        padding-top: 10px;
+        text-transform: uppercase;
+        font-weight: 700;
+        color: black;
+        border-radius: 10px;
+
+        &.undo-button{
+            background-color: cornflowerblue;
+        }
+
+        &.undo-button:hover {
+            background-color: rgb(125, 163, 233);
+        }
+
+        &.newgame-button{
+            margin-top: 30px;
+            background-color: lightcoral;
+        }
+
+        &.newgame-button:hover {
+            background-color: rgb(235, 154, 154);
+        }
+    }
+}

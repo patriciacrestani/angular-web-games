@@ -24,6 +24,11 @@
       >
       <i class="fa-solid fa-ban card emptyDeck" *ngIf="!hasUnblockedStock()"></i>
     </div>
+
+    <div class="buttons">
+      <button class="button undo-button" (click)="undo()"><i class="fa-solid fa-rotate-left"></i> Undo</button>
+      <button class="button newgame-button" (click)="newGame()"><i class="fa-solid fa-plus"></i> New game</button>
+    </div>
   </div>
   
   <div class="columns">

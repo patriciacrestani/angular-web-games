@@ -361,4 +361,34 @@ export class AppComponent {
   blockDrop() {
     return false;
   }
+
+  undo() {
+    let index = 0;
+    if(this.hasUnblockedStock()) {
+      index = this.unblockedStock.length - 1;
+    }
+    this.stock[index].blockCard();
+  }
+
+  blockAllDeck() {
+    this.deck.forEach(card => card.blockCard());
+  }
+
+  newGame() {
+    this.stock = [];
+    this.clubDeck = [];
+    this.spadesDeck = [];
+    this.heartDeck = [];
+    this.diamondDeck = [];
+    this.firstColumn = [];
+    this.secondColumn = [];
+    this.thirdColumn = [];
+    this.fourthColumn = [];
+    this.fifthColumn = [];
+    this.sixthColumn = [];
+    this.seventhColumn = [];
+    this.randomNumbersControl = [];
+    this.blockAllDeck();
+    this.setGame();
+  }
 }
