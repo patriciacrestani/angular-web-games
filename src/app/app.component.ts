@@ -245,7 +245,7 @@ export class AppComponent {
   }
 
   sortPredicate(index: number, card: CdkDrag<Card>, dropList: CdkDropList<Card[]>): boolean{
-    return (index == (dropList.data.length - 1));
+    return (index == (dropList.data.length));
   }
 
   deckPredicate(cardDropped: CdkDrag<any>, dropList: CdkDropList<any>): boolean{
@@ -274,36 +274,39 @@ export class AppComponent {
     let lastCardDropContainer: Card = event.container.data[event.container.data.length - 1];
 
     if(!lastCardDropContainer.checkOppositeType(cardDropped.type)){
+      console.log("not opposite value");
       return;
     }
 
     if(!lastCardDropContainer.checkPreviousValue(cardDropped.value)){
+      console.log("not previous value");
       return;
     }
 
-    // let previousIndex = event.previousIndex;
+    let previousIndex = event.previousIndex;
 
-    // if(this.checkStock(event.previousContainer)) {
-    //   previousIndex = this.stock.findIndex(c => c.image = cardDropped.image);
-    //   console.log("stock", this.stock);
-    //   console.log("carta", cardDropped);
-    //   console.log("index in stock", this.stock.findIndex(c => c.image = cardDropped.image));
-    //   console.log("previousIndex", previousIndex);
+    if(this.checkStock(event.previousContainer)) {
+      let previousIndex = event.previousIndex;
+      previousIndex = this.stock.findIndex(c => c.id == cardDropped.id);
+      console.log("stock", this.stock);
+      console.log("carta", cardDropped);
+      console.log("index in stock", this.stock.findIndex(c => c.id == cardDropped.id));
+      console.log("previousIndex", previousIndex);
 
-    //   transferArrayItem(
-    //     this.stock,
-    //     event.container.data,
-    //     previousIndex,
-    //     event.container.data.length
-    //   );
-    //   return;
-    // }
+      transferArrayItem(
+        this.stock,
+        event.container.data,
+        previousIndex,
+        event.container.data.length
+      );
+      return;
+    }
 
     transferArrayItem(
       event.previousContainer.data,
       event.container.data,
-      event.currentIndex,
-      event.container.data.length
+      event.previousIndex,
+      event.currentIndex
     );
 
     if(!this.checkStock(event.previousContainer)) {
@@ -317,10 +320,29 @@ export class AppComponent {
     let lastCardDeck: Card = event.container.data[event.container.data.length - 1];
 
     if(lastCardDeck.type != cardDropped.type){
+      console.log("different type");
       return;
     }
 
     if(!lastCardDeck.checkNextValue(cardDropped.value)){
+      console.log("not next value");
+      return;
+    }
+    
+    if(this.checkStock(event.previousContainer)) {
+      let previousIndex = event.previousIndex;
+      previousIndex = this.stock.findIndex(c => c.id == cardDropped.id);
+      console.log("stock", this.stock);
+      console.log("carta", cardDropped);
+      console.log("index in stock", this.stock.findIndex(c => c.id == cardDropped.id));
+      console.log("previousIndex", previousIndex);
+
+      transferArrayItem(
+        this.stock,
+        event.container.data,
+        previousIndex,
+        event.container.data.length
+      );
       return;
     }
 

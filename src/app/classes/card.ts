@@ -2,6 +2,7 @@ import { CardType } from "../enums/card-type-enum";
 import { CardValue } from "../enums/card-value-enum";
 
 export class Card {
+    id: number;
     type: number;
     value: number;
     nextValue: number;
@@ -19,6 +20,7 @@ export class Card {
         this.value = value;
         this.nextCard = null;
         this.previousCard = null;
+        this.id = Number(type.toString() + value.toString());
         
         if(value == CardValue.Ace) {
             this.previousValue = CardValue.King;
