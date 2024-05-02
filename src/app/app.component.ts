@@ -5,6 +5,7 @@ import { Card } from './classes/card';
 import { CardType } from './enums/card-type-enum';
 import { CardValue } from './enums/card-value-enum';
 import { CdkDrag, CdkDragDrop, CdkDropList, DragDropModule, transferArrayItem } from '@angular/cdk/drag-drop';
+import { CardId } from './enums/card-id-enum';
 
 @Component({
   selector: 'app-root',
@@ -28,7 +29,7 @@ export class AppComponent {
   fifthColumn: Card[] = [];
   sixthColumn: Card[] = [];
   seventhColumn: Card[] = [];
-  randomNumbersControl: number[] = [];
+  cardsIds: number[] = []
 
   constructor() {
     this.setDeck();
@@ -113,45 +114,45 @@ export class AppComponent {
     this.setGame();
   }
 
-  getRandomNumber(maxNumber: number) {
-    return Math.floor(Math.random() * maxNumber);
+  getRandomId(maxNumber: number) {
+    let randomIndex: number = Math.floor(Math.random() * maxNumber);
+    let randomId = this.cardsIds[randomIndex];
+    this.cardsIds.splice(randomIndex, 1);
+    return randomId;
   }
-
-  controlRandomNumbers(number: number): boolean {
-    if(!this.randomNumbersControl || this.randomNumbersControl.length <= 0) {
-      this.randomNumbersControl = [];
-      this.randomNumbersControl.push(number);
-      return false;
-    }
-
-    if(this.randomNumbersControl.find(num => num == number)) {
-      return true;
-    }
-
-    this.randomNumbersControl.push(number);
-    return false;
-  }
+  
+  shuffleCards(cards: Card[]): Card[] { 
+    for (let i = cards.length - 1; i > 0; i--) { 
+      const j = Math.floor(Math.random() * (i + 1)); 
+      [cards[i], cards[j]] = [cards[j], cards[i]]; 
+    } 
+    return cards; 
+  }; 
 
   setStock() {
-    for(let i = 0; i < this.deck.length; i++){
-      if(this.randomNumbersControl.find(indice => indice == i)) {
-        continue;
+    let stockAux: Card[] = [];
+    for(let i = 0; i < this.cardsIds.length; i++){
+      let cardFromRandomId = this.deck.find(card => card.id == this.cardsIds[i]);
+      
+      if(cardFromRandomId) {
+        stockAux.push(cardFromRandomId);
       }
-      this.stock.push(this.deck[i]);
     }
+    this.stock = this.shuffleCards(stockAux);
   }
 
   setColumn(columnNumber: number) {
-    let randomNumber;
-    let column = [];
+    let randomId: number;
+    let column: Card[] = [];
 
     for(let i = columnNumber; i > 0; i--){
-      randomNumber = this.getRandomNumber(52);
-      while(this.controlRandomNumbers(randomNumber)) {
-        randomNumber = this.getRandomNumber(52);
-      }
+      randomId = this.getRandomId(this.cardsIds.length - 1);
 
-      column.push(this.deck[randomNumber]);
+      let cardFromRandomId = this.deck.find(card => card.id == randomId);
+      
+      if(cardFromRandomId) {
+        column.push(cardFromRandomId);
+      }
     }
 
     switch(columnNumber) {
@@ -201,6 +202,9 @@ export class AppComponent {
   }
 
   setGame() {
+    console.log(this.deck);
+    this.cardsIds = [...CardId.getIds()];
+    console.log(this.deck);
     let count = 7;
 
     while(count != 0) {
@@ -273,15 +277,18 @@ export class AppComponent {
     let cardDropped: Card = event.item.data;
     let lastCardDropContainer: Card = event.container.data[event.container.data.length - 1];
 
-    if(!lastCardDropContainer.checkOppositeType(cardDropped.type)){
-      console.log("not opposite value");
-      return;
+    if(lastCardDropContainer) {
+      if(!lastCardDropContainer.checkOppositeType(cardDropped.type)){
+        console.log("not opposite value");
+        return;
+      }
+  
+      if(!lastCardDropContainer.checkPreviousValue(cardDropped.value)){
+        console.log("not previous value");
+        return;
+      }
     }
 
-    if(!lastCardDropContainer.checkPreviousValue(cardDropped.value)){
-      console.log("not previous value");
-      return;
-    }
 
     let previousIndex = event.previousIndex;
 
@@ -387,7 +394,7 @@ export class AppComponent {
     this.fifthColumn = [];
     this.sixthColumn = [];
     this.seventhColumn = [];
-    this.randomNumbersControl = [];
+    this.cardsIds = CardId.getIds();
     this.blockAllDeck();
     this.setGame();
   }
