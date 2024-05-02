@@ -202,9 +202,7 @@ export class AppComponent {
   }
 
   setGame() {
-    console.log(this.deck);
     this.cardsIds = [...CardId.getIds()];
-    console.log(this.deck);
     let count = 7;
 
     while(count != 0) {
@@ -269,7 +267,6 @@ export class AppComponent {
   }
 
   drop(event: CdkDragDrop<Card[], Card[], Card>) {
-    console.log("drop", event);
     if (event.previousContainer === event.container) {
       return;
     }
@@ -279,12 +276,10 @@ export class AppComponent {
 
     if(lastCardDropContainer) {
       if(!lastCardDropContainer.checkOppositeType(cardDropped.type)){
-        console.log("not opposite value");
         return;
       }
   
       if(!lastCardDropContainer.checkPreviousValue(cardDropped.value)){
-        console.log("not previous value");
         return;
       }
     }
@@ -295,10 +290,6 @@ export class AppComponent {
     if(this.checkStock(event.previousContainer)) {
       let previousIndex = event.previousIndex;
       previousIndex = this.stock.findIndex(c => c.id == cardDropped.id);
-      console.log("stock", this.stock);
-      console.log("carta", cardDropped);
-      console.log("index in stock", this.stock.findIndex(c => c.id == cardDropped.id));
-      console.log("previousIndex", previousIndex);
 
       transferArrayItem(
         this.stock,
@@ -322,27 +313,20 @@ export class AppComponent {
   }
 
   dropDeck(event: CdkDragDrop<Card[], Card[], Card>) {
-    console.log("dropDeck", event);
     let cardDropped: Card = event.item.data;
     let lastCardDeck: Card = event.container.data[event.container.data.length - 1];
 
     if(lastCardDeck.type != cardDropped.type){
-      console.log("different type");
       return;
     }
 
     if(!lastCardDeck.checkNextValue(cardDropped.value)){
-      console.log("not next value");
       return;
     }
     
     if(this.checkStock(event.previousContainer)) {
       let previousIndex = event.previousIndex;
       previousIndex = this.stock.findIndex(c => c.id == cardDropped.id);
-      console.log("stock", this.stock);
-      console.log("carta", cardDropped);
-      console.log("index in stock", this.stock.findIndex(c => c.id == cardDropped.id));
-      console.log("previousIndex", previousIndex);
 
       transferArrayItem(
         this.stock,
