@@ -4,14 +4,16 @@ export class GamesEnum {
     public static Solitaire: Game = {
         id: 1,
         title: "Solitaire",
-        image: "assets/images/games/solitaire.jpg",
+        class: "solitaire",
+        image: "assets/images/games/solitaire.png",
         url: "/solitaire"
     };
 
     public static Minesweeper: Game = {
         id: 2,
         title: "Minesweeper",
-        image: "assets/images/games/solitaire.jpg",
+        class: "minesweeper",
+        image: "assets/images/games/minesweeper.png",
         url: "/minesweeper"
     };
 

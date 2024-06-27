@@ -1,5 +1,8 @@
+<h1 class="title">Web Games</h1>
+
 <div class="game-list" *ngIf="checkGameList()">
     <a class="game-link" href="{{game.url}}" *ngFor="let game of games; let iGame = index">
-        <img class="game-image" src="{{game.image}}" alt="{{game.title}}">
+        <img class="game-image {{ game.class }}" src="{{game.image}}" alt="{{game.title}}">
+        <span class="game-title">{{ game.title }}</span>
     </a>
 </div>
