@@ -1,0 +1,22 @@
+.game-list {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 80px;
+
+    .game-link {
+        max-height: 200px;
+        max-width: 200px;
+    }
+
+    .game-image {
+        max-height: 200px;
+        max-width: 200px;
+        border-radius: 20px;
+        -moz-box-shadow: 5px 5px 10px #000;
+        -webkit-box-shadow: 5px 5px 10px #000;
+        box-shadow: 5px 5px 10px #000;
+    }
+}

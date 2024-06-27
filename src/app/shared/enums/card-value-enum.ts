@@ -1,4 +1,4 @@
-export class CardValue {
+export class CardValueEnum {
     public static Ace: number = 1;
     public static Two: number = 2;
     public static Three: number = 3;
@@ -14,8 +14,8 @@ export class CardValue {
     public static King: number = 13;
 
     public static getValues(): number[] {
-        var values: number[] = Object.keys(CardValue).map(value => {
-            return CardValue[value as keyof CardValue];
+        var values: number[] = Object.keys(CardValueEnum).map(value => {
+            return CardValueEnum[value as keyof CardValueEnum];
         })
         return values;
     }

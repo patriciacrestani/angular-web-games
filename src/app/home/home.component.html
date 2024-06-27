@@ -1,0 +1,5 @@
+<div class="game-list" *ngIf="checkGameList()">
+    <a class="game-link" href="{{game.url}}" *ngFor="let game of games; let iGame = index">
+        <img class="game-image" src="{{game.image}}" alt="{{game.title}}">
+    </a>
+</div>

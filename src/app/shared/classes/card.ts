@@ -1,5 +1,5 @@
-import { CardType } from "../enums/card-type-enum";
-import { CardValue } from "../enums/card-value-enum";
+import { CardTypeEnum } from "../enums/card-type-enum";
+import { CardValueEnum } from "../enums/card-value-enum";
 
 export class Card {
     id: number;
@@ -16,20 +16,20 @@ export class Card {
     constructor(type: number, value: number) {
         this.type = type;
         this.blocked = true;
-        this.typesAllowed = CardType.getOppositeTypes(type);
+        this.typesAllowed = CardTypeEnum.getOppositeTypes(type);
         this.value = value;
         this.nextCard = null;
         this.previousCard = null;
         this.id = Number(type.toString() + value.toString());
         
-        if(value == CardValue.Ace) {
-            this.previousValue = CardValue.King;
+        if(value == CardValueEnum.Ace) {
+            this.previousValue = CardValueEnum.King;
         } else {
             this.previousValue = value - 1;
         }
 
-        if(value == CardValue.King) {
-            this.nextValue = CardValue.Ace;
+        if(value == CardValueEnum.King) {
+            this.nextValue = CardValueEnum.Ace;
         } else {
             this.nextValue = value + 1;
         }

@@ -1,4 +1,4 @@
-export class CardId {
+export class CardIdEnum {
     public static ids: number[] = [
         11, 12, 13, 14, 15, 16, 17, 18, 19, 110, 111, 112, 113,
         21, 22, 23, 24, 25, 26, 27, 28, 29, 210, 211, 212, 213,
